@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konung Save Editor</title>
+    <title>Konung 2 Save Editor</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Konung Save Editor</h1>
+    <div id="drop-area">
+        <p>Drag & drop your KONUNG2 save file here, or click to select</p>
+    </div>
     <form id="upload-form">
         <label for="save-file">Upload Save File:</label>
         <input type="file" id="save-file" accept=".SA0,.SA1,.SA2,.SA3,.SA4,.SA5,.SA6,.SA7,.SA8,.SA9">
     </form>
     <div id="editor-section" style="display:none;">
         <h2>Edit Save Data</h2>
+        <label id="filename-label" style="display:block; margin-bottom:10px;"></label>
         <div id="data-values">
             <!-- Data values will be rendered here by app.js -->
         </div>
