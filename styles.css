@@ -14,3 +14,26 @@
 #save-file {
     display: none;
 }
+
+#filename-label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+#reset-btn {
+    display: inline-block;
+    margin-left: 8px;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.2em;
+    cursor: pointer;
+    vertical-align: middle;
+    padding: 0 6px;
+    transition: color 0.2s;
+}
+
+#reset-btn:hover {
+    color: #d32f2f;
+}

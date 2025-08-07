@@ -1,28 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Konung 2 Save Editor</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <h1>Konung Save Editor</h1>
     <div id="drop-area">
         <p>Drag & drop your KONUNG2 save file here, or click to select</p>
+        <form id="upload-form">
+            <label for="save-file">Upload Save File:</label>
+            <input type="file" id="save-file" accept=".SA0,.SA1,.SA2,.SA3,.SA4,.SA5,.SA6,.SA7,.SA8,.SA9">
+        </form>
     </div>
-    <form id="upload-form">
-        <label for="save-file">Upload Save File:</label>
-        <input type="file" id="save-file" accept=".SA0,.SA1,.SA2,.SA3,.SA4,.SA5,.SA6,.SA7,.SA8,.SA9">
-    </form>
     <div id="editor-section" style="display:none;">
         <h2>Edit Save Data</h2>
-        <label id="filename-label" style="display:block; margin-bottom:10px;"></label>
+        <label id="filename-label"></label>
+        <button id="reset-btn" title="Reset">&#10006;</button>
+        <button id="download-btn">Download Modified Save</button>
         <div id="data-values">
+            <div id="gold-block">
+                <label id="gold-label">Gold:</label>
+                <input type="number" id="gold-input" value="0" min="0" max="2147483647" />
+                <div id="original-gold-label">Original Gold Value: <span id="original-gold-value">0</span></div>
+            </div>
+            <div id="heroes-block">
+                <label id="heroes-label">Heroes:</label>
+                <ul id="heroes-list">
+                    <li id="hero-1" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="1" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                    <li id="hero-2" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="2" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                    <li id="hero-3" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="3" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                    <li id="hero-4" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="4" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                    <li id="hero-5" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="5" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                    <li id="hero-6" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="6" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                    <li id="hero-7" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="7" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                    <li id="hero-8" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="8" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                    <li id="hero-9" style="display:none;">
+                        <span class="hero-info"></span>
+                        <button class="edit-hero-btn" data-hero="9" title="Edit"><span>&#9998;</span></button>
+                    </li>
+                </ul>
+            </div>
+            <!-- Hero view block for editing -->
+            <div id="hero-view-block" style="display:none;">
+                <h3>Edit Hero</h3>
+                <form id="hero-edit-form">
+                    <label for="hero-name-select">Hero Name:</label>
+                    <select id="hero-name-select"></select>
+                    <br>
+                    <label for="hero-nickname-select">Hero Nickname:</label>
+                    <select id="hero-nickname-select"></select>
+                    <br>
+                    <div id="main-stats-block">
+                        <h4>Main Stats</h4>
+                        <div>
+                            <label for="free-points-value">Свободный опыт:</label>
+                        <input type="number" id="free-points-value" min="0" max="65535" />
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Stat</th>
+                                    <th>Base</th>
+                                    <th>Current</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Харизма</td>
+                                    <td><input type="number" id="main-stat-base-0" min="0" max="255" /></td>
+                                    <td><input type="number" id="main-stat-current-0" min="0" max="255" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Ловкость</td>
+                                    <td><input type="number" id="main-stat-base-1" min="0" max="255" /></td>
+                                    <td><input type="number" id="main-stat-current-1" min="0" max="255" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Интеллект</td>
+                                    <td><input type="number" id="main-stat-base-2" min="0" max="255" /></td>
+                                    <td><input type="number" id="main-stat-current-2" min="0" max="255" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Обучаемость</td>
+                                    <td><input type="number" id="main-stat-base-3" min="0" max="255" /></td>
+                                    <td><input type="number" id="main-stat-current-3" min="0" max="255" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Сила</td>
+                                    <td><input type="number" id="main-stat-base-4" min="0" max="255" /></td>
+                                    <td><input type="number" id="main-stat-current-4" min="0" max="255" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Выносливость</td>
+                                    <td><input type="number" id="main-stat-base-5" min="0" max="255" /></td>
+                                    <td><input type="number" id="main-stat-current-5" min="0" max="255" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="secondary-stats-block">
+                        <h4>Secondary Stats</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Stat</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Stat 1</td>
+                                    <td><input type="number" id="secondary-stat-1" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 2</td>
+                                    <td><input type="number" id="secondary-stat-2" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 3</td>
+                                    <td><input type="number" id="secondary-stat-3" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 4</td>
+                                    <td><input type="number" id="secondary-stat-4" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 5</td>
+                                    <td><input type="number" id="secondary-stat-5" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 6</td>
+                                    <td><input type="number" id="secondary-stat-6" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 7</td>
+                                    <td><input type="number" id="secondary-stat-7" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 8</td>
+                                    <td><input type="number" id="secondary-stat-8" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 9</td>
+                                    <td><input type="number" id="secondary-stat-9" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 10</td>
+                                    <td><input type="number" id="secondary-stat-10" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 11</td>
+                                    <td><input type="number" id="secondary-stat-11" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 12</td>
+                                    <td><input type="number" id="secondary-stat-12" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 13</td>
+                                    <td><input type="number" id="secondary-stat-13" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 14</td>
+                                    <td><input type="number" id="secondary-stat-14" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 15</td>
+                                    <td><input type="number" id="secondary-stat-15" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 16</td>
+                                    <td><input type="number" id="secondary-stat-16" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 17</td>
+                                    <td><input type="number" id="secondary-stat-17" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 18</td>
+                                    <td><input type="number" id="secondary-stat-18" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 19</td>
+                                    <td><input type="number" id="secondary-stat-19" min="0" max="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Stat 20</td>
+                                    <td><input type="number" id="secondary-stat-20" min="0" max="100" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <div id="items-block">
+                        <h4>Equipped items</h4>
+                        <ul>
+                            <li>Melee Weapon: <span id="melee-weapon"></span></li>
+                            <li>Ranged Weapon: <span id="ranged-weapon"></span></li>
+                            <li>Body Armor: <span id="body-armor"></span></li>
+                            <li>Helm Armor: <span id="helm-armor"></span></li>
+                            <li>Left Hand: <span id="left-hand"></span></li>
+                            <li>Neck: <span id="neck"></span></li>
+                            <li>Bracelet Right: <span id="bracelet-right"></span></li>
+                            <li>Bracelet Left: <span id="bracelet-left"></span></li>
+                            <li>Ring Right: <span id="ring-right"></span></li>
+                            <li>Ring Left: <span id="ring-left"></span></li>
+                            <li>Arrows: <span id="arrows"></span></li>
+                        </ul>
+                    </div>
+                    <div id="hero-inventory-block">
+                        <h4>Inventory</h4>
+                        <ul id="hero-inventory-list">
+                            <!-- Inventory items will be rendered here by app.js -->
+                        </ul>
+                    </div>
+                    <button type="submit">Save</button>
+                    <button type="button" id="cancel-hero-edit">Cancel</button>
+                    <hr/>
+                    <button type="button" id="best-enchants-for-equipped-btn">Best Enchants for Equipped</button>
+                    <button type="button" id="test-enchants-btn">Test Enchants</button>
+                </form>
+            </div>
             <!-- Data values will be rendered here by app.js -->
         </div>
-        <button id="download-btn">Download Modified Save</button>
     </div>
-    <script src="app.js"></script>
+    <script type="module" src="./app.js"></script>
 </body>
+
 </html>
