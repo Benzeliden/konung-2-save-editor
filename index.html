@@ -73,6 +73,7 @@
             <div id="hero-view-block" style="display:none;">
                 <h3>Edit Hero</h3>
                 <form id="hero-edit-form">
+                    <button type="submit">Save & Close</button>
                     <label for="hero-name-select">Hero Name:</label>
                     <select id="hero-name-select"></select>
                     <br>
@@ -83,7 +84,7 @@
                         <h4>Main Stats</h4>
                         <div>
                             <label for="free-points-value">Свободный опыт:</label>
-                        <input type="number" id="free-points-value" min="0" max="65535" />
+                            <input type="number" id="free-points-value" min="0" max="65535" />
                         </div>
                         <table>
                             <thead>
@@ -243,11 +244,144 @@
                             <!-- Inventory items will be rendered here by app.js -->
                         </ul>
                     </div>
-                    <button type="submit">Save</button>
-                    <button type="button" id="cancel-hero-edit">Cancel</button>
-                    <hr/>
-                    <button type="button" id="best-enchants-for-equipped-btn">Best Enchants for Equipped</button>
-                    <button type="button" id="test-enchants-btn">Test Enchants</button>
+                    <button type="submit">Save & Close</button>
+                    <!-- <button type="button" id="cancel-hero-edit">Cancel</button> -->
+                    <hr />
+                    <div class="fast-edit-buttons" id="inventory-item-editor-div">
+                        <h4>Редактор предметов</h4>
+                        <div>
+                            <label for="inventory-index-input">Номер предмета в инвентаре:</label>
+                            <input id="inventory-index-input" type="number" value="0" min="0" max="42" />
+                        </div>
+                        <div id="inventory-editor-new-item-form">
+                            <div class="inventory-editor-div">
+                                <span>Текущий предмет в ячейке:</span>
+                                <span id="inventory-item-editor-current-name">???</span>
+                            </div>
+                            <div class="inventory-editor-div">
+                                <label for="inventory-item-type-editor-select">Тип предмета:</label>
+                                <select id="inventory-item-type-editor-select">
+                                    <option value="0">Оружие ближнего боя</option>
+                                    <option value="1">Лук / Арбалет</option>
+                                    <option value="2">Доспех</option>
+                                    <option value="3">Шлем</option>
+                                    <option value="4">Щит</option>
+                                    <!--Game don't have item type 5-->
+                                    <option value="6">Ожерелье</option>
+                                    <option value="7">Браслет</option>
+                                    <option value="8">Кольцо</option>
+                                    <option value="9">Зелье / ингридиенты</option>
+                                    <!--Game don't have item type 10-->
+                                    <option value="12">Стрелы / Болты</option>
+                                    <option value="11">Другое</option>
+                                </select>
+                            </div>
+                            <div class="inventory-editor-div">
+                                <label for="inventory-item-editor-select">Выберите предмет:</label>
+                                <select id="inventory-item-editor-select">
+                                    <!--Populated by script-->
+                                </select>
+                                <div id="inventory-item-editor-durability-setup" class="inventory-editor-div">
+                                    <label for="inventory-item-editor-durability-input">Прочность:</label>
+                                    <input id="inventory-item-editor-durability-input" type="number" min="0" max="99" step="1" value="50" />
+                                </div>
+                                <div id="inventory-item-editor-enchant-setup" class="inventory-editor-div">
+                                    <h4>Настройка зачарования:</h4>
+                                    <div>
+                                        <label>Вын:</label>
+                                        <span>
+                                            <input type="radio" name="stat-vit" value="0" checked>0</input>
+                                            <input type="radio" name="stat-vit" value="1">1</input>
+                                            <input type="radio" name="stat-vit" value="2">2</input>
+                                            <input type="radio" name="stat-vit" value="3">3</input>
+                                            <input type="radio" name="stat-vit" value="4">4</input>
+                                            <input type="radio" name="stat-vit" value="5">5</input>
+                                            <input type="radio" name="stat-vit" value="6">6</input>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <label>Сил:</label>
+                                        <span>
+                                            <input type="radio" name="stat-str" value="0" checked>0</input>
+                                            <input type="radio" name="stat-str" value="1">1</input>
+                                            <input type="radio" name="stat-str" value="2">2</input>
+                                            <input type="radio" name="stat-str" value="3">3</input>
+                                            <input type="radio" name="stat-str" value="4">4</input>
+                                            <input type="radio" name="stat-str" value="5">5</input>
+                                            <input type="radio" name="stat-str" value="6">6</input>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <label>Лов:</label>
+                                        <span>
+                                            <input type="radio" name="stat-agi" value="0" checked>0</input>
+                                            <input type="radio" name="stat-agi" value="1">1</input>
+                                            <input type="radio" name="stat-agi" value="2">2</input>
+                                            <input type="radio" name="stat-agi" value="3">3</input>
+                                            <input type="radio" name="stat-agi" value="4">4</input>
+                                            <input type="radio" name="stat-agi" value="5">5</input>
+                                            <input type="radio" name="stat-agi" value="6">6</input>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <label>Урон:</label>
+                                        <span>
+                                            <input type="radio" name="stat-dmg" value="0" checked>0</input>
+                                            <input type="radio" name="stat-dmg" value="1">4</input>
+                                            <input type="radio" name="stat-dmg" value="2">12</input>
+                                            <input type="radio" name="stat-dmg" value="3">20</input>
+                                            <input type="radio" name="stat-dmg" value="4">28</input>
+                                            <input type="radio" name="stat-dmg" value="5">40</input>
+                                            <input type="radio" name="stat-dmg" value="6">48</input>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <label>Броня:</label>
+                                        <span>
+                                            <input type="radio" name="stat-armor" value="0" checked>0</input>
+                                            <input type="radio" name="stat-armor" value="1">4</input>
+                                            <input type="radio" name="stat-armor" value="2">12</input>
+                                            <input type="radio" name="stat-armor" value="3">20</input>
+                                            <input type="radio" name="stat-armor" value="4">28</input>
+                                            <input type="radio" name="stat-armor" value="5">40</input>
+                                            <input type="radio" name="stat-armor" value="6">48</input>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div id="inventory-item-editor-potion-setup" class="inventory-editor-div">
+                                    <label for="inventory-item-editor-potion-concentration-input">Концентрация:</label>
+                                    <input id="inventory-item-editor-potion-concentration-input" type="number" min="0" max="100" step="0.25" value="15" />
+                                </div>
+                                <div id="inventory-item-editor-arrow-setup" class="inventory-editor-div">
+                                    <label for="inventory-item-editor-arrow-quantity-input">Количество стрел:</label>
+                                    <input id="inventory-item-editor-arrow-quantity-input" type="number" min="0" step="1" value="30" />
+                                    <label for="inventory-item-editor-arrow-poisoning-input">Отравление:</label>
+                                    <input id="inventory-item-editor-arrow-poisoning-input" type="number" min="0" max="100" step="1" value="0" />
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" id="inventory-item-editor-apply-btn">Применить</button>
+                                <span>Заменить предмет в инвентаре на указанный</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="fast-edit-buttons">
+                        <button type="button" id="best-enchants-for-equipped-btn">Топ Зачарования</button>
+                        <span>Применить на все предметы в инвентаре Удр+48 Брн+48 Сил +6 Вын +6 Лов +6</span>
+                    </div>
+                    <div class="fast-edit-buttons">
+                        <button type="button" id="potions-refill-btn">Наполнить зелья</button>
+                        <span>Наполнить все зелья героя до указанной концентрации</span>
+                        <input id="potion-concentration-input" type="number" value="15" min="0" max="99999"
+                            step="0.25" />
+                    </div>
+                    <hr />
+                    <!-- todo: действия со стрелами - установить количество, отравить -->
+                    <!-- todo: сделать прочность 99/99-->
+                    <div class="fast-edit-buttons">
+                        <button type="button" id="test-btn">Test Btn</button>
+                    </div>
                 </form>
             </div>
             <!-- Data values will be rendered here by app.js -->

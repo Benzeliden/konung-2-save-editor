@@ -15,7 +15,26 @@ export class UIManager {
         this.heroEditForm = document.getElementById('hero-edit-form');
         this.cancelHeroEditBtn = document.getElementById('cancel-hero-edit');
         this.bestEnchantsForEquippedBtn = document.getElementById('best-enchants-for-equipped-btn');
-        this.testEnchantsBtn = document.getElementById('test-enchants-btn');
+        this.testSomethingBtn = document.getElementById('test-btn');
+        this.potionRefillBtn = document.getElementById('potions-refill-btn');
+        this.potionConcentrationInput = document.getElementById('potion-concentration-input');
+        // item editor
+        this.inventoryItemEditorDiv = document.getElementById('inventory-item-editor-div');
+        this.inventoryItemEditorIndexInput = document.getElementById('inventory-index-input');
+        this.inventoryItemEditorApplyBtn = document.getElementById('inventory-item-editor-apply-btn');
+        this.inventoryItemEditorCurrentName = document.getElementById('inventory-item-editor-current-name');
+        this.inventoryItemEditorTypeSelect = document.getElementById('inventory-item-type-editor-select');
+        this.inventoryItemEditorItemSelect = document.getElementById('inventory-item-editor-select');
+        this.inventoryItemEditorDurabilitySetup = document.getElementById('inventory-item-editor-durability-setup');
+        this.inventoryItemEditorEnchantSetup = document.getElementById('inventory-item-editor-enchant-setup');
+        this.inventoryItemEditorPotionSetup = document.getElementById('inventory-item-editor-potion-setup');
+        this.inventoryItemEditorArrowSetup = document.getElementById('inventory-item-editor-arrow-setup');
+        this.inventoryItemEditorNewItemForm = document.getElementById('inventory-editor-new-item-form');
+        this.inventoryItemEditorDurabilityInput = document.getElementById('inventory-item-editor-durability-input');
+        this.inventoryItemEditorPotionConcentrationInput = document.getElementById('inventory-item-editor-potion-concentration-input');
+        this.inventoryItemEditorArrowQuantityInput = document.getElementById('inventory-item-editor-arrow-quantity-input');
+        this.inventoryItemEditorArrowPoisoningInput = document.getElementById('inventory-item-editor-arrow-poisoning-input');
+
         // Stat inputs
         this.freePointsInput = document.getElementById('free-points-value');
         this.mainStatsBaseInputs = [];
@@ -85,7 +104,7 @@ export class UIManager {
 
         let heroName = localeManager.getText('names', hero.nameId);
         let heroNickname = localeManager.getText('nicknames', hero.nicknameId);
-        return `${heroName} ${heroNickname} hp ${hero.hp} (Level: ${hero.level}, exp: ${hero.expCurrent} / ${hero.expNextLevel}). Inventory ${hero.inventory.length} / 42 items.`;
+        return `${heroName} ${heroNickname} hp ${hero.hp.toFixed(0)} (Level: ${hero.level}, exp: ${hero.expCurrent} / ${hero.expNextLevel}). Inventory ${hero.inventory.length} / 42 items.`;
 
     }
 }

@@ -37,3 +37,16 @@
 #reset-btn:hover {
     color: #d32f2f;
 }
+
+.fast-edit-buttons {
+    margin-top: 12px;
+}
+
+.inventory-editor-div{
+    margin-top: 8px;
+}
+
+input[type="number"] {
+    border: 1px solid rgba(170, 170, 170, 0.5);
+    width: 4.5em; /* Enough for 3 digits and some padding */
+}

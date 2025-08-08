@@ -186,16 +186,115 @@ class RawItem {
     }
 
     getEnchant() {
-        if (this.enchant !== undefined) {
+        if (this.isEnchantable()) {
             return new ItemEnchant(this.enchant);
         }
         return undefined;
     }
 
     applyEnchant(enchant) {
-        if (this.enchant !== undefined) {
+        if (this.isEnchantable()) {
             this.enchant = enchant.encodeToInt16();
             this.dirty = true;
+        }
+    }
+
+    isEnchantable() {
+        return RawItem.isEnchantableType(this.itemType);
+    }
+
+    static isEnchantableType(itemType) {
+        return itemType >= 0 && itemType <= 4 || itemType >= 6 && itemType <= 8;
+    }
+
+    applyConcentration(floatValue) {
+        if (this.potionConcentration !== undefined) {
+            this.potionConcentration = floatValue;
+            this.dirty = true;
+        }
+    }
+
+    applyItemId(id, itemType) {
+        if (this.id !== undefined) {
+            this.id = id;
+            this.itemType = itemType;
+            this.dirty = true;
+        }
+    }
+
+    applyItemData(id, itemType, durability, enchant, concentration, arrowsAmount, arrowsPoison) {
+        // check input
+        if (enchant instanceof ItemEnchant) {
+            enchant = enchant.encodeToInt16();
+        } else {
+            enchant = 0;
+        }
+
+        this.id = id;
+        this.itemType = itemType;
+        this.dirty = true;
+
+        this.currentDurability = undefined;
+        this.maxDurability = undefined;
+        this.enchant = undefined;
+        this.potionConcentration = undefined;
+        this.amount = undefined;
+        this.arrowPoison = undefined;
+        switch (this.itemType) {
+            case 0: // Melee weapon
+            case 1: // Ranged weapon
+            case 2: // Body armor
+            case 3: // Helm armor
+            case 4: // shield
+                {
+                    if (typeof durability !== "number" || !isFinite(durability) || durability < 1 || durability > 1000) {
+                        durability = 50;
+                    }
+                    this.currentDurability = durability
+                    this.maxDurability = durability
+
+                    this.enchant = enchant
+                    break;
+                }
+            case 6: // Neck item;
+            case 7: // Bracelet
+            case 8: // Ring
+                {
+                    this.enchant = enchant
+                    break;
+                }
+            case 9: // Potion & ingredients
+                {
+                    // For potions, we can have concentration value
+                    if (this.id >= 85 && this.id <= 92) {
+
+                        if (typeof concentration !== "number" || !isFinite(concentration) || concentration < 1 || concentration > 1000) {
+                            concentration = 15;
+                        }
+                        this.potionConcentration = concentration;
+                    }
+                    break;
+                }
+            case 0x0C: // arrows
+                {
+                    if (typeof arrowsAmount === "number" && isFinite(arrowsAmount)) {
+                        if (arrowsAmount < 1 || arrowsAmount > 255) {
+                            arrowsAmount = 30;
+                        }
+                        this.amount = Math.round(arrowsAmount);
+                    } else {
+                        this.amount = 30;
+                    }
+                    if (typeof arrowsPoison === "number" && isFinite(arrowsPoison)) {
+                        if (arrowsPoison < 0 || arrowsPoison > 255) {
+                            arrowsPoison = 0;
+                        }
+                        this.arrowPoison = Math.round(arrowsPoison);
+                    } else {
+                        this.arrowPoison = 0;
+                    }
+                    break;
+                }
         }
     }
 
@@ -295,7 +394,7 @@ function saveRawItemIfNeeded(view, rawItem) {
 }
 
 function parseSaveFile(buffer) {
-    console.log("Parsing save file...");
+    //console.log("Parsing save file...");
     const view = new DataView(buffer);
     currentView = view; // Store the current view for later use
 
@@ -427,4 +526,4 @@ function downloadNewSaveFile(fileName = "KONUNG2.SA0", saveData) {
     URL.revokeObjectURL(url);
 }
 
-export { parseSaveFile, downloadNewSaveFile, SaveFileModel, Hero, enchantProperties, ItemEnchant };
+export { parseSaveFile, downloadNewSaveFile, SaveFileModel, Hero, enchantProperties, ItemEnchant, RawItem };

@@ -39,6 +39,10 @@ class ItemsManager {
             name_ru: `Dummy Item ${id}`,
         };
     }
+
+    getItemListByType(type) {
+        return this.items.filter(item => item.type === type);
+    }
 }
 
 export { ItemsManager };
