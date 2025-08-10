@@ -72,8 +72,8 @@ export class ItemEditor {
             this.uiManager.inventoryItemEditorArrowQuantityInput.value = item.amount;
         }
 
-        if (item.arrowPoison) {
-            this.uiManager.inventoryItemEditorArrowPoisoningInput.value = item.arrowPoison;
+        if (item.appliedPoison) {
+            this.uiManager.inventoryItemEditorappliedPoisoningInput.value = item.appliedPoison;
         }
     }
 
@@ -96,6 +96,7 @@ export class ItemEditor {
                 this.uiManager.inventoryItemEditorEnchantSetup.style.display = '';
                 this.uiManager.inventoryItemEditorPotionSetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorArrowSetup.style.display = 'none';
+                this.uiManager.inventoryItemEditorPoisoningSetup.style.display = itemType == 1 ? '' : 'none';
                 break;
             case 6:
             case 7:
@@ -104,24 +105,28 @@ export class ItemEditor {
                 this.uiManager.inventoryItemEditorEnchantSetup.style.display = '';
                 this.uiManager.inventoryItemEditorPotionSetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorArrowSetup.style.display = 'none';
+                this.uiManager.inventoryItemEditorPoisoningSetup.style.display = 'none';
                 break;
             case 9:
                 this.uiManager.inventoryItemEditorDurabilitySetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorEnchantSetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorPotionSetup.style.display = '';
                 this.uiManager.inventoryItemEditorArrowSetup.style.display = 'none';
+                this.uiManager.inventoryItemEditorPoisoningSetup.style.display = 'none';
                 break;
             case 12:
                 this.uiManager.inventoryItemEditorDurabilitySetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorEnchantSetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorPotionSetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorArrowSetup.style.display = '';
+                this.uiManager.inventoryItemEditorPoisoningSetup.style.display = '';
                 break;
             default:
                 this.uiManager.inventoryItemEditorDurabilitySetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorEnchantSetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorPotionSetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorArrowSetup.style.display = 'none';
+                this.uiManager.inventoryItemEditorPoisoningSetup.style.display = 'none';
         }
 
         //console.log(`selectItemTypeForEditor: ${this.lastSelectedItemType} -> ${itemType}`);
@@ -132,7 +137,7 @@ export class ItemEditor {
             // Populate item select options based on the selected item type
             const itemList = this.itemsManager.getItemListByType(itemType);
             // todo: use localization manager
-            itemList.sort((a, b) => 
+            itemList.sort((a, b) =>
                 a.name_ru.localeCompare(b.name_ru) * 2 +
                 (a.desc_ru || '').localeCompare(b.desc_ru || '')
             );
@@ -198,8 +203,8 @@ export class ItemEditor {
         let durability = parseInt(this.uiManager.inventoryItemEditorDurabilitySetup.value);
         let concentration = parseFloat(this.uiManager.inventoryItemEditorPotionConcentrationInput.value);
         let arrowAmount = parseInt(this.uiManager.inventoryItemEditorArrowQuantityInput.value);
-        let arrowPoison = parseInt(this.uiManager.inventoryItemEditorArrowPoisoningInput.value);
-        item.applyItemData(newId, newType, durability, enchant, concentration, arrowAmount, arrowPoison);
+        let appliedPoison = parseInt(this.uiManager.inventoryItemEditorappliedPoisoningInput.value);
+        item.applyItemData(newId, newType, durability, enchant, concentration, arrowAmount, appliedPoison);
         this.prepopulateInventoryItemForEditor(item);
 
         // Notify the parent component that an item was edited

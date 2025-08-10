@@ -30,11 +30,12 @@ export class UIManager {
         this.inventoryItemEditorEnchantSetup = document.getElementById('inventory-item-editor-enchant-setup');
         this.inventoryItemEditorPotionSetup = document.getElementById('inventory-item-editor-potion-setup');
         this.inventoryItemEditorArrowSetup = document.getElementById('inventory-item-editor-arrow-setup');
+        this.inventoryItemEditorPoisoningSetup = document.getElementById('inventory-item-editor-poisoning-setup');
         this.inventoryItemEditorNewItemForm = document.getElementById('inventory-editor-new-item-form');
         this.inventoryItemEditorDurabilityInput = document.getElementById('inventory-item-editor-durability-input');
         this.inventoryItemEditorPotionConcentrationInput = document.getElementById('inventory-item-editor-potion-concentration-input');
         this.inventoryItemEditorArrowQuantityInput = document.getElementById('inventory-item-editor-arrow-quantity-input');
-        this.inventoryItemEditorArrowPoisoningInput = document.getElementById('inventory-item-editor-arrow-poisoning-input');
+        this.inventoryItemEditorappliedPoisoningInput = document.getElementById('inventory-item-editor-applied-poisoning-input');
 
         // Stat inputs
         this.freePointsInput = document.getElementById('free-points-value');

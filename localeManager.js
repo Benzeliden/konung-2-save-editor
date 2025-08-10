@@ -134,7 +134,8 @@ class LocaleManager {
             case 2: // Body armor
             case 3: // Helm armor
             case 4: // shield
-                return `${itemName}, ${itemDescription}. Прочность - ${rawItem.currentDurability.toFixed(0)} / ${rawItem.maxDurability.toFixed(0)}.${this.displayEnchant(rawItem.getEnchant())}`;
+                return `${itemName}, ${itemDescription}. Прочность - ${rawItem.currentDurability.toFixed(0)} / ${rawItem.maxDurability.toFixed(0)}.${this.displayEnchant(rawItem.getEnchant())}` +
+                    (rawItem.appliedPoison ? `. Отравление - ${rawItem.appliedPoison}` : "");
             case 6: // Neck item;
             case 7: // Bracelet
             case 8: // Ring
@@ -146,7 +147,7 @@ class LocaleManager {
                 return `${itemName}, ${itemDescription}`
             case 0x0C: // arrows
                 return `${itemName}, ${itemDescription}. Количество - ${rawItem.amount}` +
-                    (rawItem.arrowPoison ? `. Отравление - ${rawItem.arrowPoison}` : "");
+                    (rawItem.appliedPoison ? `. Отравление - ${rawItem.appliedPoison}` : "");
             default:
                 return `${itemName}, ${itemDescription}. Type - ${rawItem.itemType}`;
         }

@@ -113,6 +113,9 @@ class RawItem {
                     this.currentDurability = subView.getFloat32(4, true);
                     this.maxDurability = subView.getFloat32(8, true);
                     this.enchant = subView.getUint16(14, true);
+                    if (this.itemType == 0) {
+                        this.appliedPoison = subView.getUint16(12, true);
+                    }
                     break;
                 }
             case 6: // Neck item;
@@ -133,7 +136,7 @@ class RawItem {
             case 0x0C: // arrows
                 {
                     this.amount = subView.getUint8(4, true);
-                    this.arrowPoison = subView.getUint8(12, true);
+                    this.appliedPoison = subView.getUint16(12, true);
                     break;
                 }
         }
@@ -143,6 +146,7 @@ class RawItem {
         if (!this.subView) return;
 
         this.subView.setUint8(0, this.itemType);
+        this.subView.setUint16(1, 0xFFFF, true);
         this.subView.setUint8(3, this.id);
 
         switch (this.itemType) {
@@ -154,6 +158,13 @@ class RawItem {
                 {
                     this.subView.setFloat32(4, this.currentDurability, true);
                     this.subView.setFloat32(8, this.maxDurability, true);
+                    if (this.itemType === 2 || this.itemType == 3) {
+                        this.subView.setUint16(12, 0xFFFF, true);
+                    } else if (this.itemType === 0) {
+                        this.subView.setUint16(12, this.appliedPoison, true);
+                    } else {
+                        this.subView.setUint16(12, 0, true);
+                    }
                     this.subView.setUint16(14, this.enchant, true);
                     break;
                 }
@@ -161,6 +172,9 @@ class RawItem {
             case 7: // Bracelet
             case 8: // Ring
                 {
+                    this.subView.setUint32(4, 0xFFFFFFFF, true);
+                    this.subView.setUint32(8, 0, true);
+                    this.subView.setUint16(12, 0xFFFF, true);
                     this.subView.setUint16(14, this.enchant, true);
                     break;
                 }
@@ -173,14 +187,25 @@ class RawItem {
                         this.subView.setFloat32(4, 0, true); // Clear concentration for non-potion items
                         this.potionConcentration = undefined; // Reset concentration
                     }
+                    this.subView.setUint32(8, 0xFFFFFFFF, true);
+                    this.subView.setUint32(12, 0xFFFF, true);
                     break;
                 }
             case 0x0C: // arrows
                 {
-                    this.subView.setUint8(4, this.amount, true);
-                    this.subView.setUint8(12, this.arrowPoison, true);
+                    this.subView.setUint16(4, this.amount, true);
+                    this.subView.setUint16(6, 0, true);
+                    this.subView.setUint32(8, 0xFFFFFFFF, true);
+                    this.subView.setUint16(12, this.appliedPoison, true);
+                    this.subView.setUint16(14, 0, true);
                     break;
                 }
+            case 0x0B: {
+                this.subView.setUint32(4, 0xFFFFFFFF, true);
+                this.subView.setUint32(8, 0xFFFFFFFF, true);
+                this.subView.setUint32(12, 0xFFFF, true);
+                break;
+            }
         }
         this.dirty = false;
     }
@@ -239,7 +264,7 @@ class RawItem {
         this.enchant = undefined;
         this.potionConcentration = undefined;
         this.amount = undefined;
-        this.arrowPoison = undefined;
+        this.appliedPoison = undefined;
         switch (this.itemType) {
             case 0: // Melee weapon
             case 1: // Ranged weapon
@@ -289,9 +314,9 @@ class RawItem {
                         if (arrowsPoison < 0 || arrowsPoison > 255) {
                             arrowsPoison = 0;
                         }
-                        this.arrowPoison = Math.round(arrowsPoison);
+                        this.appliedPoison = Math.round(arrowsPoison);
                     } else {
-                        this.arrowPoison = 0;
+                        this.appliedPoison = 0;
                     }
                     break;
                 }
