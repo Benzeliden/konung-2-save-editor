@@ -267,6 +267,28 @@
             "vit": "Вын",
             "armor": "Брн",
             "dmg": "Удр"
+        },
+        "ui-locale": {
+            "equipped-items": "Надетые предметы",
+            "save-hero": "Применить изменения и закрыть",
+            "gold": "Золото",
+            "original-gold": "Было золота до редактирования",
+            "edit-hero": "Редактор героя",
+            "download-save": "Скачать измененный файл",
+            "heroes-list-header": "Список героев",
+            "hero-format": "{0} {1}. здоровье {2} (Уровень: {3}, опыт: {4} / {5}). Инвентарь {6} / 42 предметов.",
+            "inventory": "Инвентарь",
+            "item-melee-weapon": "Оружие ближнего боя",
+            "item-ranged-weapon": "Оружие дальнего боя",
+            "item-body-armor": "Доспех",
+            "item-helm-armor": "Шлем",
+            "item-left-hand": "Левая рука",
+            "item-neck": "Ожерелье",
+            "item-bracelet-right": "Браслет правый",
+            "item-bracelet-left": "Браслет левый",
+            "item-ring-right": "Кольцо правое",
+            "item-ring-left": "Кольцо левое",
+            "item-arrows": "Стрелы"
         }
     },
     "en": {
@@ -299,6 +321,28 @@
             "Smithery",
             "Masonry",
             "Village management"
-        ]
+        ],
+        "ui-locale": {
+            "equipped-items": "Equipped items",
+            "save-hero": "Save Hero & Close",
+            "gold": "Gold",
+            "original-gold": "Original Gold Value",
+            "edit-hero": "Hero Editor",
+            "download-save": "Download Modified Save",
+            "heroes-list-header": "Heroes List",
+            "hero-format": "{0} {1}. hp {2} (Level: {3}, exp: {4} / {5}). Inventory {6} / 42 items.",
+            "inventory": "Inventory",
+            "item-melee-weapon": "Melee Weapon",
+            "item-ranged-weapon": "Ranged Weapon",
+            "item-body-armor": "Body Armor",
+            "item-helm-armor": "Helm Armor",
+            "item-left-hand": "Left Hand",
+            "item-neck": "Neck",
+            "item-bracelet-right": "Bracelet Right",
+            "item-bracelet-left": "Bracelet Left",
+            "item-ring-right": "Ring Right",
+            "item-ring-left": "Ring Left",
+            "item-arrows": "Arrows"
+        }
     }
 }

@@ -21,15 +21,16 @@
         <h2>Edit Save Data</h2>
         <label id="filename-label"></label>
         <button id="reset-btn" title="Reset">&#10006;</button>
-        <button id="download-btn">Download Modified Save</button>
+        <button id="download-btn" data-locale-key="download-save">Download Modified Save</button>
         <div id="data-values">
             <div id="gold-block">
-                <label id="gold-label">Gold:</label>
+                <label id="gold-label" data-locale-key="gold">Gold</label>:
                 <input type="number" id="gold-input" value="0" min="0" max="2147483647" />
-                <div id="original-gold-label">Original Gold Value: <span id="original-gold-value">0</span></div>
+                <span id="original-gold-label" data-locale-key="original-gold">Original Gold Value</span>:
+                <span id="original-gold-value">0</span>
             </div>
             <div id="heroes-block">
-                <label id="heroes-label">Heroes:</label>
+                <h4 id="heroes-label" data-locale-key="heroes-list-header">Heroes:</h4>
                 <ul id="heroes-list">
                     <li id="hero-1" style="display:none;">
                         <span class="hero-info"></span>
@@ -71,14 +72,14 @@
             </div>
             <!-- Hero view block for editing -->
             <div id="hero-view-block" style="display:none;">
-                <h3>Edit Hero</h3>
+                <h3 data-locale-key="edit-hero">Edit Hero</h3>
                 <div>
                     <span id="short-hero-info-for-editor"></span>
                 </div>
                 <hr />
                 <form id="hero-edit-form">
                     <div>
-                        <button type="submit">Save & Close</button>
+                        <button type="submit" data-locale-key="save-hero">Save & Close</button>
                     </div>
                     <div class="tabs" id="hero-edit-tabs">
                         <div class="tablist" role="tablist" aria-label="Настройки">
@@ -93,23 +94,43 @@
                         <section class="tabpanel" role="tabpanel" id="items-panel" aria-labelledby="tab-1">
 
                             <div id="items-block">
-                                <h4>Equipped items</h4>
+                                <h4 data-locale-key="equipped-items">Equipped items</h4>
                                 <ul>
-                                    <li>Melee Weapon: <span id="melee-weapon"></span></li>
-                                    <li>Ranged Weapon: <span id="ranged-weapon"></span></li>
-                                    <li>Body Armor: <span id="body-armor"></span></li>
-                                    <li>Helm Armor: <span id="helm-armor"></span></li>
-                                    <li>Left Hand: <span id="left-hand"></span></li>
-                                    <li>Neck: <span id="neck"></span></li>
-                                    <li>Bracelet Right: <span id="bracelet-right"></span></li>
-                                    <li>Bracelet Left: <span id="bracelet-left"></span></li>
-                                    <li>Ring Right: <span id="ring-right"></span></li>
-                                    <li>Ring Left: <span id="ring-left"></span></li>
-                                    <li>Arrows: <span id="arrows"></span></li>
+                                    <li><span data-locale-key="item-melee-weapon">Melee Weapon</span>: <span
+                                            id="melee-weapon"></span>
+                                    </li>
+                                    <li><span data-locale-key="item-ranged-weapon">Ranged Weapon</span>: <span
+                                            id="ranged-weapon"></span>
+                                    </li>
+                                    <li>
+                                        <span data-locale-key="item-body-armor">Body Armor</span>: <span
+                                            id="body-armor"></span>
+                                    </li>
+                                    <li><span data-locale-key="item-helm-armor">Helm Armor</span>: <span
+                                            id="helm-armor"></span>
+                                    </li>
+                                    <li><span data-locale-key="item-left-hand">Left Hand</span>: <span
+                                            id="left-hand"></span>
+                                    </li>
+                                    <li><span data-locale-key="item-neck">Neck</span>: <span id="neck"></span></li>
+                                    <li><span data-locale-key="item-bracelet-right">Bracelet Right</span>: <span
+                                            id="bracelet-right"></span>
+                                    </li>
+                                    <li><span data-locale-key="item-bracelet-left">Bracelet Left</span>: <span
+                                            id="bracelet-left"></span>
+                                    </li>
+                                    <li><span data-locale-key="item-ring-right">Ring Right</span>: <span
+                                            id="ring-right"></span>
+                                    </li>
+                                    <li><span data-locale-key="item-ring-left">Ring Left</span>: <span
+                                            id="ring-left"></span>
+                                    </li>
+                                    <li><span data-locale-key="item-arrows">Arrows</span>: <span id="arrows"></span>
+                                    </li>
                                 </ul>
                             </div>
                             <div id="hero-inventory-block">
-                                <h4>Inventory</h4>
+                                <h4 data-locale-key="inventory">Inventory</h4>
                                 <ul id="hero-inventory-list">
                                     <!-- Inventory items will be rendered here by app.js -->
                                 </ul>
@@ -411,15 +432,14 @@
                         </section>
                     </div>
                     <hr />
-                    <button type="submit">Save & Close</button>
+                    <button type="submit" data-locale-key="save-hero">Save & Close</button>
                     <!-- <button type="button" id="cancel-hero-edit">Cancel</button> -->
-                    <hr />
+                    <!--<hr />
                     <div class="fast-edit-buttons">
                         <button type="button" id="test-btn">Test Btn</button>
-                    </div>
+                    </div> -->
                 </form>
             </div>
-            <!-- Data values will be rendered here by app.js -->
         </div>
     </div>
     <script type="module" src="./app.js"></script>

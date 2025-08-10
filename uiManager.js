@@ -99,13 +99,40 @@ export class UIManager {
             }
             option.textContent = localeManager.getText('names', i);
         }
+
+        // find all elements with data-locale-key attributes
+        const localizedElements = document.querySelectorAll('[data-locale-key]');
+        localizedElements.forEach(element => {
+            const key = element.getAttribute('data-locale-key');
+            element.textContent = localeManager.getText('ui-locale', key);
+        });
     }
 
     displayHeroShort(hero, localeManager) {
-
         let heroName = localeManager.getText('names', hero.nameId);
         let heroNickname = localeManager.getText('nicknames', hero.nicknameId);
-        return `${heroName} ${heroNickname} hp ${hero.hp.toFixed(0)} (Level: ${hero.level}, exp: ${hero.expCurrent} / ${hero.expNextLevel}). Inventory ${hero.inventory.length} / 42 items.`;
-
+        let stringFormat = localeManager.getText('ui-locale', 'hero-format');
+        return String.format(
+            stringFormat,
+            heroName,
+            heroNickname,
+            hero.hp.toFixed(0),
+            hero.level,
+            hero.expCurrent,
+            hero.expNextLevel,
+            hero.inventory.length
+        );
     }
+}
+
+// Simple string.format implementation
+if (!String.format) {
+    String.format = function(format, ...args) {
+        return format.replace(/{(\d+)}/g, function(match, number) { 
+            return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+            ;
+        });
+    };
 }
