@@ -84,8 +84,9 @@ export class HeroEditor {
         this.currentHeroIndex = index;
         const hero = this.saveData.heroes[index];
         if (!hero) return;
-        console.log("Editing hero:", hero);
-        
+        //console.log("Editing hero:", hero);
+        this.uiManager.shortHeroInfoForEditor.textContent = this.uiManager.displayHeroShort(hero, this.localeManager);
+
         // Hide list, show edit block
         this.uiManager.heroesBlock.style.display = 'none';
         this.uiManager.heroViewBlock.style.display = '';

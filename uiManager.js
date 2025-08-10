@@ -10,6 +10,7 @@ export class UIManager {
         this.resetBtn = document.getElementById('reset-btn');
         this.heroesBlock = document.getElementById('heroes-block');
         this.heroViewBlock = document.getElementById('hero-view-block');
+        this.shortHeroInfoForEditor = document.getElementById('short-hero-info-for-editor');
         this.heroNameSelect = document.getElementById('hero-name-select');
         this.heroNicknameSelect = document.getElementById('hero-nickname-select');
         this.heroEditForm = document.getElementById('hero-edit-form');
