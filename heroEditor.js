@@ -90,18 +90,18 @@ export class HeroEditor {
         // Hide list, show edit block
         this.uiManager.heroesBlock.style.display = 'none';
         this.uiManager.heroViewBlock.style.display = '';
-        
+
         // Populate fields
         this.uiManager.heroNameSelect.value = hero.nameId;
         this.uiManager.heroNicknameSelect.value = hero.nicknameId;
         this.uiManager.freePointsInput.value = hero.freePoints || 0;
-        
+
         // Main stats
         for (let i = 0; i < 6; i++) {
             this.uiManager.mainStatsBaseInputs[i].value = hero.mainStatsBase[i];
             this.uiManager.mainStatsCurrentInputs[i].value = hero.mainStatsCurrent[i];
         }
-        
+
         // Secondary stats
         for (let i = 1; i <= 20; i++) {
             this.uiManager.secondaryStats[i - 1].value = hero.secondaryStats[i - 1] || 0;
@@ -136,22 +136,22 @@ export class HeroEditor {
     saveHeroChanges() {
         if (this.currentHeroIndex === null) return;
         const hero = this.saveData.heroes[this.currentHeroIndex];
-        
+
         hero.nameId = this.uiManager.heroNameSelect.value;
         hero.nicknameId = this.uiManager.heroNicknameSelect.value;
         hero.freePoints = parseInt(this.uiManager.freePointsInput.value) || 0;
-        
+
         // Main stats
         for (let i = 0; i < 6; i++) {
             hero.mainStatsBase[i] = parseInt(this.uiManager.mainStatsBaseInputs[i].value) || 0;
             hero.mainStatsCurrent[i] = parseInt(this.uiManager.mainStatsCurrentInputs[i].value) || 0;
         }
-        
+
         // Secondary stats
         for (let i = 1; i <= 20; i++) {
             hero.secondaryStats[i - 1] = parseInt(this.uiManager.secondaryStats[i - 1].value) || 0;
         }
-        
+
         // Update hero info in list
         const li = this.uiManager.heroListItems[this.currentHeroIndex];
         const infoSpan = li.querySelector('.hero-info');
@@ -165,7 +165,25 @@ export class HeroEditor {
         for (let i = 0; i < hero.inventory.length; i++) {
             const item = hero.inventory[i];
             const li = document.createElement('li');
-            li.textContent = this.localeManager.getRawItemFullDescription(item);
+            const editBtn = document.createElement('button');
+            editBtn.className = 'edit-inv-item-btn';
+            editBtn.type = 'button';
+            //editBtn.setAttribute('data-inventory-idx', i);
+            editBtn.title = 'Edit';
+            editBtn.innerHTML = '<span>&#9998;</span>';
+
+            editBtn.addEventListener('click', () => {
+                this.uiManager.inventoryItemEditorIndexInput.value = i;
+                this.uiManager.inventoryItemEditorIndexInput.dispatchEvent(new Event('change'));
+                // scroll page to inventory editor
+                this.uiManager.inventoryItemEditorDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            const span = document.createElement('span');
+            span.textContent = this.localeManager.getRawItemFullDescription(item);
+
+            li.appendChild(editBtn);
+            li.appendChild(span);
             this.uiManager.heroInventoryList.appendChild(li);
         }
     }

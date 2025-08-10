@@ -30,7 +30,7 @@ export class ItemEditor {
         if (this.uiManager.inventoryItemEditorTypeSelect) {
             this.uiManager.inventoryItemEditorTypeSelect.addEventListener('change', () => {
                 const itemType = parseInt(this.uiManager.inventoryItemEditorTypeSelect.value);
-                console.log("Inventory item editor type changed to " + itemType);
+                //console.log("Inventory item editor type changed to " + itemType);
                 this.selectItemTypeForEditor(itemType);
             });
         }
@@ -43,9 +43,38 @@ export class ItemEditor {
     }
 
     prepopulateInventoryItemForEditor(item) {
-        this.uiManager.inventoryItemEditorCurrentName.textContent = this.localeManager.getRawItemFullDescription(item);
+        if (item == null) {
+            this.uiManager.inventoryItemEditorCurrentName.textContent = '-- select an item --';
+            return;
+        } else {
+            this.uiManager.inventoryItemEditorCurrentName.textContent = this.localeManager.getRawItemFullDescription(item);
+        }
+
         //console.log("Prepopulating inventory item editor for item:", item);
         this.selectItemTypeForEditor(item.itemType, item.id);
+
+        if (item.maxDurability) {
+            this.uiManager.inventoryItemEditorDurabilityInput.value = item.maxDurability;
+        }
+
+        if (item.isEnchantable()) {
+            const enchant = item.getEnchant();
+            if (enchant) {
+                // todo: select proper radio buttons for enchant
+            }
+        }
+
+        if (item.potionConcentration) {
+            this.uiManager.inventoryItemEditorPotionConcentrationInput.value = item.potionConcentration;
+        }
+
+        if (item.amount) {
+            this.uiManager.inventoryItemEditorArrowQuantityInput.value = item.amount;
+        }
+
+        if (item.arrowPoison) {
+            this.uiManager.inventoryItemEditorArrowPoisoningInput.value = item.arrowPoison;
+        }
     }
 
     selectItemTypeForEditor(itemType, knownItemId) {
@@ -103,11 +132,18 @@ export class ItemEditor {
             // Populate item select options based on the selected item type
             const itemList = this.itemsManager.getItemListByType(itemType);
             // todo: use localization manager
-            itemList.sort((a, b) => a.name_ru.localeCompare(b.name_ru));
+            itemList.sort((a, b) => 
+                a.name_ru.localeCompare(b.name_ru) * 2 +
+                (a.desc_ru || '').localeCompare(b.desc_ru || '')
+            );
             itemList.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.id;
                 option.textContent = `${item.name_ru} - ${item.desc_ru}`;
+                if (option.textContent.length > 50) {
+                    option.title = option.textContent;
+                    option.textContent = option.textContent.slice(0, 50) + '...';
+                }
                 if (knownItemId === item.id) {
                     option.selected = true;
                 }

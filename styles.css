@@ -46,6 +46,21 @@
     margin-top: 8px;
 }
 
+.edit-inv-item-btn {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #888;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0 6px;
+    transition: color 0.2s;
+}
+
+.edit-inv-item-btn:hover {
+    color: #005f03;
+}
+
 input[type="number"] {
     border: 1px solid rgba(170, 170, 170, 0.5);
     width: 4.5em;
@@ -74,6 +89,10 @@ option {
 
 option:last-child {
     border-bottom: none;
+}
+
+.bold-text {
+    font-weight: bold;
 }
 
 :root {
