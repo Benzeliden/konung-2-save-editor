@@ -96,7 +96,7 @@ export class ItemEditor {
                 this.uiManager.inventoryItemEditorEnchantSetup.style.display = '';
                 this.uiManager.inventoryItemEditorPotionSetup.style.display = 'none';
                 this.uiManager.inventoryItemEditorArrowSetup.style.display = 'none';
-                this.uiManager.inventoryItemEditorPoisoningSetup.style.display = itemType == 1 ? '' : 'none';
+                this.uiManager.inventoryItemEditorPoisoningSetup.style.display = itemType == 0 ? '' : 'none';
                 break;
             case 6:
             case 7:
@@ -200,7 +200,7 @@ export class ItemEditor {
             //console.log("Got enchant ", enchant)
         }
 
-        let durability = parseInt(this.uiManager.inventoryItemEditorDurabilitySetup.value);
+        let durability = parseInt(this.uiManager.inventoryItemEditorDurabilityInput.value);
         let concentration = parseFloat(this.uiManager.inventoryItemEditorPotionConcentrationInput.value);
         let arrowAmount = parseInt(this.uiManager.inventoryItemEditorArrowQuantityInput.value);
         let appliedPoison = parseInt(this.uiManager.inventoryItemEditorappliedPoisoningInput.value);

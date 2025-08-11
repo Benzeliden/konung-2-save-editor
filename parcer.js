@@ -365,6 +365,7 @@ class SaveFileModel {
 let currentView = null; // DataView of the save file
 let currentSaveModel = null; // SaveFileModel of the current save file
 
+const partySizeOffset = 0x00026060; // 1 byte
 const goldIndex = 0x0004B2F2; // 4 bytes index for gold in the buffer
 const nextHeroOffset = 0x100; // offset to the next hero data
 const mainHeroExp = 0x0004B2EE; // 4 bytes index for main hero experience in the buffer
@@ -385,7 +386,9 @@ const mainHeroSelfIdentityOffset = 0x0004B3C8;
 const mainHeroMainStatsBaseOffset = 0x0004B38C;
 const mainHeroMainStatsCurrentOffset = 0x0004B398;
 const mainHeroSecondaryStatsOffset = 0x0004B39E; // 20 bytes, 1 byte for each secondary stat
-const mainHeroFreeSkillPointsOffset = 0x0004B314; // not sure how many bytes is here, need to test
+const mainHeroFreeSkillPointsOffset = 0x0004B314; // 2 bytes
+
+const mainHeroPoisoning = 0x0004B31E // 2 bytes
 
 // Items:
 
@@ -446,16 +449,13 @@ function parseSaveFile(buffer) {
 
     const model = new SaveFileModel();
     model.gold = goldValue;
+    const partySize = view.getUint8(partySizeOffset, /* littleEndian= */ true);
 
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < partySize; i++) {
         let offset = nextHeroOffset * i;
         const hero = new Hero();
 
         hero.level = view.getUint8(offset + mainHeroLevel, /* littleEndian= */ true);
-        if (hero.level === 0) {
-            break; // Stop if no more heroes
-        }
-
         hero.expCurrent = view.getUint32(offset + mainHeroExp, /* littleEndian= */ true);
         hero.hp = view.getUint16(offset + mainHeroHpOffset, /* littleEndian= */ true) / 16; // Convert to [0, 100] scale
         hero.expNextLevel = view.getUint32(offset + mainHeroExpToNextLevel, /* littleEndian= */ true);
@@ -522,6 +522,18 @@ function searchForUnknownAppearances(localeManager, appearanceEditor) {
         let test16bit = currentView.getUint16(offset + mainHeroAppearanceOffset, /* littleEndian= */ true);
         let portraitId = currentView.getUint8(offset + mainHeroPortraitOffset, /* littleEndian= */ true);
 
+        if (portraitId > 0) {
+            const name = localeManager.getText('names', nameId);
+            if (testCases[portraitId] == undefined) {
+                testCases[portraitId] = { name: name, portraitId: portraitId, portraitHex: portraitId.toString(16).padStart(2, '0') };
+            } else {
+                if (!testCases[portraitId].name.includes(name)) {
+                    testCases[portraitId].name += `, ${name}`;
+                }
+            }
+
+        }
+
         let statsKey = `${figureId}-${appearanceId}-${test16bit}`;
         if (stats[statsKey] == undefined) {
             stats[statsKey] = 0
@@ -537,14 +549,14 @@ function searchForUnknownAppearances(localeManager, appearanceEditor) {
         //    console.log(`Hero ${i}. Offset: ${offset}. Level: ${level}. Hp: ${hp}. Name: ${localeManager.getText('names', nameId)}. Race/Gender: ${localeManager.getText('figure', figureId)}. Appearance: ${localeManager.getText('appearance-colors', appearanceId)}. Appearance (16-bit): ${test16bit}. Portrait: ${localeManager.getText('portraits', portraitId)}`);
         //}
     }
-    testCases.sort((a,b) => {
-        if (a.figureId !== b.figureId) {
-            return a.figureId - b.figureId;
-        }
-        return a.appearanceId - b.appearanceId;
-    });
+    //testCases.sort((a, b) => {
+    //    if (a.figureId !== b.figureId) {
+    //        return a.figureId - b.figureId;
+    //    }
+    //    return a.appearanceId - b.appearanceId;
+    //});
     console.log(JSON.stringify(testCases, null, 2));
-    console.log(stats);
+    //console.log(stats);
 }
 
 function applyChangesToCurrentView(saveData) {
