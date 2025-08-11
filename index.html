@@ -96,36 +96,38 @@
                             <div id="items-block">
                                 <h4 data-locale-key="equipped-items">Equipped items</h4>
                                 <ul>
-                                    <li><span class="bold-text" data-locale-key="item-melee-weapon">Melee Weapon</span>: <span
-                                            id="melee-weapon"></span>
+                                    <li><span class="bold-text" data-locale-key="item-melee-weapon">Melee Weapon</span>:
+                                        <span id="melee-weapon"></span>
                                     </li>
-                                    <li><span class="bold-text" data-locale-key="item-ranged-weapon">Ranged Weapon</span>: <span
-                                            id="ranged-weapon"></span>
+                                    <li><span class="bold-text" data-locale-key="item-ranged-weapon">Ranged
+                                            Weapon</span>: <span id="ranged-weapon"></span>
                                     </li>
                                     <li>
-                                        <span class="bold-text" data-locale-key="item-body-armor">Body Armor</span>: <span
-                                            id="body-armor"></span>
+                                        <span class="bold-text" data-locale-key="item-body-armor">Body Armor</span>:
+                                        <span id="body-armor"></span>
                                     </li>
-                                    <li><span class="bold-text" data-locale-key="item-helm-armor">Helm Armor</span>: <span
-                                            id="helm-armor"></span>
+                                    <li><span class="bold-text" data-locale-key="item-helm-armor">Helm Armor</span>:
+                                        <span id="helm-armor"></span>
                                     </li>
                                     <li><span class="bold-text" data-locale-key="item-left-hand">Left Hand</span>: <span
                                             id="left-hand"></span>
                                     </li>
-                                    <li><span class="bold-text" data-locale-key="item-neck">Neck</span>: <span id="neck"></span></li>
-                                    <li><span class="bold-text" data-locale-key="item-bracelet-right">Bracelet Right</span>: <span
-                                            id="bracelet-right"></span>
+                                    <li><span class="bold-text" data-locale-key="item-neck">Neck</span>: <span
+                                            id="neck"></span></li>
+                                    <li><span class="bold-text" data-locale-key="item-bracelet-right">Bracelet
+                                            Right</span>: <span id="bracelet-right"></span>
                                     </li>
-                                    <li><span class="bold-text" data-locale-key="item-bracelet-left">Bracelet Left</span>: <span
-                                            id="bracelet-left"></span>
+                                    <li><span class="bold-text" data-locale-key="item-bracelet-left">Bracelet
+                                            Left</span>: <span id="bracelet-left"></span>
                                     </li>
-                                    <li><span class="bold-text" data-locale-key="item-ring-right">Ring Right</span>: <span
-                                            id="ring-right"></span>
+                                    <li><span class="bold-text" data-locale-key="item-ring-right">Ring Right</span>:
+                                        <span id="ring-right"></span>
                                     </li>
                                     <li><span class="bold-text" data-locale-key="item-ring-left">Ring Left</span>: <span
                                             id="ring-left"></span>
                                     </li>
-                                    <li><span class="bold-text" data-locale-key="item-arrows">Arrows</span>: <span id="arrows"></span>
+                                    <li><span class="bold-text" data-locale-key="item-arrows">Arrows</span>: <span
+                                            id="arrows"></span>
                                     </li>
                                 </ul>
                             </div>
@@ -242,7 +244,7 @@
                                             <label
                                                 for="inventory-item-editor-potion-concentration-input">Концентрация:</label>
                                             <input id="inventory-item-editor-potion-concentration-input" type="number"
-                                                min="0" max="100" step="0.25" value="15" />
+                                                min="0" max="100" step="0.01" value="15" />
                                         </div>
                                         <div id="inventory-item-editor-arrow-setup" class="inventory-editor-div">
                                             <label for="inventory-item-editor-arrow-quantity-input">Количество
@@ -251,7 +253,8 @@
                                                 step="1" value="30" />
                                         </div>
                                         <div id="inventory-item-editor-poisoning-setup">
-                                            <label for="inventory-item-editor-applied-poisoning-input">Отравление:</label>
+                                            <label
+                                                for="inventory-item-editor-applied-poisoning-input">Отравление:</label>
                                             <input id="inventory-item-editor-applied-poisoning-input" type="number"
                                                 min="0" max="100" step="1" value="0" />
                                         </div>
@@ -425,12 +428,35 @@
 
                         <section class="tabpanel" role="tabpanel" id="appearance-panel" aria-labelledby="tab-3">
                             <div class="fast-edit-buttons">
-                                <label for="hero-name-select">Hero Name:</label>
+                                <label for="hero-name-select" data-locale-key="hero-name">Hero Name:</label>
                                 <select id="hero-name-select"></select>
-                                <label for="hero-nickname-select">Hero Nickname:</label>
+                                <label for="hero-nickname-select" data-locale-key="hero-nickname">Hero Nickname:</label>
                                 <select id="hero-nickname-select"></select>
                             </div>
-                            todo: update appearance
+                            <div class="fast-edit-buttons">
+                                <label for="hero-figure-select" data-locale-key="hero-figure">Hero Race and
+                                    Gender:</label>
+                                <select id="hero-figure-select"></select>
+                                <span id="hero-figure-id-hex"></span>
+                            </div>
+                            <div class="fast-edit-buttons">
+                                <label for="hero-appearance-select" data-locale-key="hero-appearance">Hero
+                                    Appearance:</label>
+                                <select id="hero-appearance-select"></select>
+                                <span id="hero-appearance-id-hex"></span>
+                            </div>
+                            <div class="fast-edit-buttons">
+                                <label for="hero-portrait-select" data-locale-key="hero-portrait">Hero Portrait:</label>
+                                <select id="hero-portrait-select"></select>
+                                <span id="hero-portrait-id-hex"></span>
+                                <details>
+                                    <summary>О портретах</summary>
+                                    <p>Портреты героев взяты из темы на форуме <a
+                                            href="https://konung.topbb.ru/viewtopic.php?id=148">Народный Форум Князя</a>
+                                    </p>
+                                    <img src="/media/portraits.png" alt="Hero Portraits">
+                                </details>
+                            </div>
                         </section>
                     </div>
                     <hr />
@@ -441,6 +467,9 @@
                         <button type="button" id="test-btn">Test Btn</button>
                     </div> -->
                 </form>
+            </div>
+            <div class="fast-edit-buttons">
+                <button type="button" id="test-btn">Test Btn</button>
             </div>
         </div>
     </div>

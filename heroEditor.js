@@ -1,5 +1,7 @@
 import { ItemEnchant } from './parcer.js';
 import { ItemEditor } from './itemEditor.js';
+import { AppearanceEditor } from './appearanceEditor.js'
+import { searchForUnknownAppearances } from './parcer.js'
 
 export class HeroEditor {
     constructor(uiManager, localeManager, itemsManager) {
@@ -9,6 +11,7 @@ export class HeroEditor {
         this.currentHeroIndex = null;
         this.saveData = null;
         this.itemEditor = new ItemEditor(uiManager, localeManager, itemsManager);
+        this.appearanceEditor = new AppearanceEditor(uiManager, localeManager);
 
         this.initializeEventHandlers();
         this.setupItemEditor();
@@ -71,10 +74,9 @@ export class HeroEditor {
 
         // Test something button
         if (this.uiManager.testSomethingBtn) {
-            let currentItemId = 95;
             this.uiManager.testSomethingBtn.addEventListener('click', () => {
-                this.testSomething(currentItemId);
-                currentItemId++;
+                searchForUnknownAppearances(this.localeManager, this.appearanceEditor)
+                return;
             });
         }
     }
@@ -125,6 +127,8 @@ export class HeroEditor {
 
         // Setup inventory item editor
         this.itemEditor.setupForHero(hero, heroChanged);
+
+        this.appearanceEditor.setupAppearanceEditor(hero);
     }
 
     hideHeroEdit() {
@@ -140,6 +144,8 @@ export class HeroEditor {
         hero.nameId = this.uiManager.heroNameSelect.value;
         hero.nicknameId = this.uiManager.heroNicknameSelect.value;
         hero.freePoints = parseInt(this.uiManager.freePointsInput.value) || 0;
+
+        this.appearanceEditor.fillFromSelected(hero)
 
         // Main stats
         for (let i = 0; i < 6; i++) {
@@ -256,6 +262,8 @@ export class HeroEditor {
                 li.style.display = 'none';
             }
         }
+
+        this.appearanceEditor.localizeUI();
     }
 
     getCurrentHeroIndex() {

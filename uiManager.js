@@ -70,6 +70,14 @@ export class UIManager {
         this.heroItemRingLeft = document.getElementById('ring-left');
         this.heroItemArrows = document.getElementById('arrows');
         this.heroInventoryList = document.getElementById('hero-inventory-list');
+
+        // appearance
+        this.heroFigureIdHexValue = document.getElementById('hero-figure-id-hex');
+        this.heroFigureSelect = document.getElementById('hero-figure-select');
+        this.heroAppearanceIdHexValue = document.getElementById('hero-appearance-id-hex');
+        this.heroAppearanceSelect = document.getElementById('hero-appearance-select');
+        this.heroPortraitIdHexValue = document.getElementById('hero-portrait-id-hex');
+        this.heroPortraitIdSelect = document.getElementById('hero-portrait-select');
     }
 
     localizeUI(localeManager) {
@@ -89,7 +97,10 @@ export class UIManager {
                 this.heroNicknameSelect.appendChild(option);
             }
             option.textContent = localeManager.getText('nicknames', i);
-        }
+        }        
+        Array.from(this.heroNicknameSelect.options)
+            .sort((a, b) => a.textContent.localeCompare(b.textContent))
+            .forEach(option => this.heroNicknameSelect.appendChild(option));
 
         for (let i = 0; i < 206; i++) {
             let option = this.heroNameSelect.querySelector(`option[value="${i}"]`);
@@ -99,6 +110,29 @@ export class UIManager {
                 this.heroNameSelect.appendChild(option);
             }
             option.textContent = localeManager.getText('names', i);
+        }
+        Array.from(this.heroNameSelect.options)
+            .sort((a, b) => a.textContent.localeCompare(b.textContent))
+            .forEach(option => this.heroNameSelect.appendChild(option));
+
+        for (let i = 0; i < 6; i++) {
+            let option = this.heroFigureSelect.querySelector(`option[value="${i}"]`);
+            if (!option) {
+                option = document.createElement('option');
+                option.value = i;
+                option.textContent = localeManager.getText('figure', i);
+            }
+            this.heroFigureSelect.appendChild(option);
+        }
+
+        for (let i = 0; i < 43; i++) {
+            let option = this.heroPortraitIdSelect.querySelector(`option[value="${i}"]`);
+            if (!option) {
+                option = document.createElement('option');
+                option.value = i;
+                this.heroPortraitIdSelect.appendChild(option);
+            }
+            option.textContent = localeManager.getText('portraits', i);
         }
 
         // find all elements with data-locale-key attributes

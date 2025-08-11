@@ -22,8 +22,14 @@ class Hero {
         this.mainStatsBase = [0, 0, 0, 0, 0, 0]; // array of 6 numbers
         this.mainStatsCurrent = [0, 0, 0, 0, 0, 0]; // array of 6 numbers
         this.secondaryStats = Array(20).fill(0); // array of 20 numbers
-        this.nameId = 0; // number
-        this.nicknameId = 0; // number
+        this.nameId = 0;
+        this.nicknameId = 0;
+        this.figureId = 0;
+        this.appearanceId = 0;
+        this.portraitId = 0;
+        this.selfIdentity = 0;
+        this.positionX = 0;
+        this.positionY = 0;
         this.hp = 0; // number, stored as [0, 1600] but displayed as [0, 100]
 
         this.inventory = []; // array of RawItem objects
@@ -50,8 +56,14 @@ class Hero {
         copy.secondaryStats = [...this.secondaryStats];
         copy.nameId = this.nameId;
         copy.nicknameId = this.nicknameId;
+        copy.figureId = this.figureId;
+        copy.appearanceId = this.appearanceId;
+        copy.portraitId = this.portraitId;
         copy.hp = this.hp;
         copy.freePoints = this.freePoints;
+        copy.positionX = this.positionX;
+        copy.positionY = this.positionY;
+        copy.selfIdentity = this.selfIdentity;
 
         // Clone items
         copy.inventory = this.inventory.map(item => item.clone());
@@ -362,6 +374,13 @@ const mainHeroLevel = 0x0004B3BF; // 1 byte for main hero level
 const mainHeroNameOffset = 0x04B3BC; // 1 byte for main hero name id
 const mainHeroNicknameOffset = 0x04B3BD; // 1 byte for main hero nickname id
 const mainHeroHpOffset = 0x0004B31A; // int16 for main hero HP. Hp in game displayed as [0, 100], but stored as [0, 1600]
+const mainHeroFigureOffset = 0x0004B3C8; // 1 byte for main hero race and gender id
+const mainHeroAppearanceOffset = 0x0004B2FB; // 1 byte for main hero appearance id
+const mainHeroPortraitOffset = 0x0004B3BB; // 1 byte for main hero portrait id
+
+const mainHeroCoordinateX = 0x04B2DE;
+const mainHeroCoordinateY = 0x04B2DF;
+const mainHeroSelfIdentityOffset = 0x0004B3C8;
 
 const mainHeroMainStatsBaseOffset = 0x0004B38C;
 const mainHeroMainStatsCurrentOffset = 0x0004B398;
@@ -443,6 +462,13 @@ function parseSaveFile(buffer) {
         hero.nameId = view.getUint8(offset + mainHeroNameOffset, /* littleEndian= */ true);
         hero.nicknameId = view.getUint8(offset + mainHeroNicknameOffset, /* littleEndian= */ true);
         hero.freePoints = view.getUint16(offset + mainHeroFreeSkillPointsOffset, /* littleEndian= */ true);
+        hero.figureId = view.getUint8(offset + mainHeroFigureOffset, /* littleEndian= */ true);
+        hero.appearanceId = view.getUint16(offset + mainHeroAppearanceOffset, /* littleEndian= */ true);
+        hero.portraitId = view.getUint8(offset + mainHeroPortraitOffset, /* littleEndian= */ true);
+
+        hero.positionX = view.getUint8(offset + mainHeroCoordinateX, true)
+        hero.positionY = view.getUint8(offset + mainHeroCoordinateY, true)
+        hero.selfIdentity = view.getUint8(offset + mainHeroSelfIdentityOffset, /* littleEndian= */ true);
 
         // Main stats
         for (let j = 0; j < 6; j++) {
@@ -477,6 +503,50 @@ function parseSaveFile(buffer) {
     return model;
 }
 
+function searchForUnknownAppearances(localeManager, appearanceEditor) {
+    let stats = {}
+    let testCases = []
+    for (let i = 0; i < 2000; i++) {
+        let offset = nextHeroOffset * i;
+        let level = currentView.getUint8(offset + mainHeroLevel, true);
+        if (level == 0) {
+            continue;
+        }
+        let hp = currentView.getUint16(offset + mainHeroHpOffset, /* littleEndian= */ true) / 16;
+        let nameId = currentView.getUint8(offset + mainHeroNameOffset, /* littleEndian= */ true);
+        let figureId = currentView.getUint8(offset + mainHeroFigureOffset, /* littleEndian= */ true);
+        if (figureId > 5) {
+            continue;
+        }
+        let appearanceId = currentView.getUint8(offset + mainHeroAppearanceOffset, /* littleEndian= */ true);
+        let test16bit = currentView.getUint16(offset + mainHeroAppearanceOffset, /* littleEndian= */ true);
+        let portraitId = currentView.getUint8(offset + mainHeroPortraitOffset, /* littleEndian= */ true);
+
+        let statsKey = `${figureId}-${appearanceId}-${test16bit}`;
+        if (stats[statsKey] == undefined) {
+            stats[statsKey] = 0
+            if (!appearanceEditor.isKnown(figureId, appearanceId) && localeManager.getText('names', nameId) !== '') {
+                testCases.push({ figureId, appearanceId: test16bit, name: localeManager.getText('names', nameId) });
+                console.log(`Hero ${i}. Offset: ${offset}. Level: ${level}. Hp: ${hp}. Name: ${localeManager.getText('names', nameId)}. Race/Gender: ${localeManager.getText('figure', figureId)}. Appearance: ${localeManager.getText('appearance-colors', appearanceId)}. Appearance (16-bit): ${test16bit}. Portrait: ${localeManager.getText('portraits', portraitId)}`);
+
+            }
+        }
+        stats[statsKey]++
+        //if (localeManager.getText('names', nameId) == "Ифгений") {
+        //    console.warn("Found Ифгений");
+        //    console.log(`Hero ${i}. Offset: ${offset}. Level: ${level}. Hp: ${hp}. Name: ${localeManager.getText('names', nameId)}. Race/Gender: ${localeManager.getText('figure', figureId)}. Appearance: ${localeManager.getText('appearance-colors', appearanceId)}. Appearance (16-bit): ${test16bit}. Portrait: ${localeManager.getText('portraits', portraitId)}`);
+        //}
+    }
+    testCases.sort((a,b) => {
+        if (a.figureId !== b.figureId) {
+            return a.figureId - b.figureId;
+        }
+        return a.appearanceId - b.appearanceId;
+    });
+    console.log(JSON.stringify(testCases, null, 2));
+    console.log(stats);
+}
+
 function applyChangesToCurrentView(saveData) {
     if (!currentView || !saveData) {
         console.error("No current view or save data to apply changes.");
@@ -497,6 +567,9 @@ function applyChangesToCurrentView(saveData) {
         currentView.setUint8(offset + mainHeroNameOffset, hero.nameId, true);
         currentView.setUint8(offset + mainHeroNicknameOffset, hero.nicknameId, true);
         currentView.setUint16(offset + mainHeroFreeSkillPointsOffset, hero.freePoints, true);
+        currentView.setUint8(offset + mainHeroFigureOffset, hero.figureId, true);
+        currentView.setUint16(offset + mainHeroAppearanceOffset, hero.appearanceId, true);
+        currentView.setUint8(offset + mainHeroPortraitOffset, hero.portraitId, true);
 
         // Main stats
         for (let j = 0; j < 6; j++) {
@@ -551,4 +624,4 @@ function downloadNewSaveFile(fileName = "KONUNG2.SA0", saveData) {
     URL.revokeObjectURL(url);
 }
 
-export { parseSaveFile, downloadNewSaveFile, SaveFileModel, Hero, enchantProperties, ItemEnchant, RawItem };
+export { parseSaveFile, downloadNewSaveFile, SaveFileModel, Hero, enchantProperties, ItemEnchant, RawItem, searchForUnknownAppearances };

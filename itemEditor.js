@@ -65,7 +65,7 @@ export class ItemEditor {
         }
 
         if (item.potionConcentration) {
-            this.uiManager.inventoryItemEditorPotionConcentrationInput.value = item.potionConcentration;
+            this.uiManager.inventoryItemEditorPotionConcentrationInput.value = item.potionConcentration.toFixed(2);
         }
 
         if (item.amount) {

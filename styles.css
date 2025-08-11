@@ -145,3 +145,9 @@ option:last-child {
 .tabpanel[hidden] {
     display: none;
 }
+
+summary {
+    cursor: pointer;
+    font-weight: bold;
+    font-style: italic;
+}
